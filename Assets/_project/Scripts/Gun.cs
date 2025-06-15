@@ -111,9 +111,9 @@ public class Gun : MonoBehaviour
     {
         if (playerController == null || gunSpriteRenderer == null) return;
 
-        bool playerIsFacingRight = playerController.IsFacingRight;
-        gunSpriteRenderer.flipX = playerIsFacingRight;
-        transform.localPosition = Vector3.zero;
+        bool playerIsFacingRight = playerController._isFacingRight;
+        gunSpriteRenderer.flipX = !playerIsFacingRight;
+        //transform.localPosition = Vector3.zero;
     }
 
 }

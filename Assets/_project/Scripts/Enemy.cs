@@ -9,6 +9,9 @@ public class Enemy : MonoBehaviour
     [SerializeField] private int _enemyHealth = 10; // Vita dell'enemy
     private PlayerController playerController;
 
+    private Rigidbody2D rb;
+    private Vector2 moveDirection;
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         
@@ -34,15 +37,23 @@ public class Enemy : MonoBehaviour
 
     private void Awake()
     {
-        playerController = Object.FindAnyObjectByType<PlayerController>();        
+        playerController = Object.FindAnyObjectByType<PlayerController>();
+        rb = GetComponent<Rigidbody2D>();
+        rb.gravityScale = 0;
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+    }
+
+    void FixedUpdate()
+    {
+        rb.velocity = moveDirection * speed;
     }
 
     public void EnemyMovement()
     {
         if (playerController != null)
         {
-            float Direction = speed * Time.deltaTime;
-            transform.position = Vector2.MoveTowards(transform.position, playerController.transform.position, Direction);
+            Vector2 targetPosition = playerController.transform.position;
+            moveDirection = (targetPosition - rb.position).normalized;
         }
     }
 

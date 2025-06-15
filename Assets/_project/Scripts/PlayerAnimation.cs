@@ -4,107 +4,100 @@ using UnityEngine;
 
 public class PlayerAnimation : MonoBehaviour
 {
+    
+    [SerializeField] private Animator playerAnimator;
 
     
-    [SerializeField] private Animator playerAnimator; // prendo il riferimento all'Animator del Player
+    [SerializeField] private string idleFront = "Player_Idle_Front"; 
+    [SerializeField] private string idleBack = "Player_Idle_Back";   
+    [SerializeField] private string idleLeft = "Player_Idle_Left";   
+    [SerializeField] private string idleRight = "Player_Idle_Right"; 
 
-    [SerializeField] private string idleFront = "Player_Idle_Front";
-    [SerializeField] private string idleBack = "Player_Idle_Back";
-    [SerializeField] private string idleLeft = "Player_Idle_Left";
-    [SerializeField] private string idleRight = "Player_Idle_Right";
+    [SerializeField] private string walkDown = "Player_Walk_Down";   
+    [SerializeField] private string walkUp = "Player_Walk_Up";       
+    [SerializeField] private string walkLeft = "Player_Walk_Left";   
+    [SerializeField] private string walkRight = "Player_Walk_Right"; 
 
-    [SerializeField] private string walkDown = "Player_Walk_Down";
-    [SerializeField] private string walkUp = "Player_Walk_Up";     
-    [SerializeField] private string walkLeft = "Player_Walk_Left";
-    [SerializeField] private string walkRight = "Player_Walk_Right";
+    private Vector2 lastDirection = new Vector2(0, -1); // Default: guarda in basso (Front)
 
-
-    private Vector2 lastDirection = new Vector2(0, -1); //tengo traccia dell'ultima posizione (default = front) 
     private void Awake()
     {
-        // Ottengo il riferimento all'Animator se non è già stato assegnato
         if (playerAnimator == null)
         {
             playerAnimator = GetComponent<Animator>();
         }
+
         if (playerAnimator == null)
         {
-            Debug.LogError("PlayerAnimation: Animator non trovato sul GameObject. Assicurati che ci sia un componente Animator.");
+            Debug.LogError("PlayerAnimation: L'Animator non è stato trovato sul GameObject. Assicurati che sia presente!");
         }
     }
 
     public void UpdateAnimations(bool isMoving, Vector2 moveDirection)
     {
-        // Se non c'è un Animator valido, non fare nulla.
         if (playerAnimator == null) return;
 
-        string animationToPlay = ""; // Qui salveremo il nome dell'animazione da riprodurre.
+        string animationToPlay = ""; 
 
         if (isMoving)
         {
             moveDirection.Normalize();
+
+            
             lastDirection = moveDirection;
 
             if (Mathf.Abs(moveDirection.x) > Mathf.Abs(moveDirection.y))
             {
-                // Movimento orizzontale
                 if (moveDirection.x > 0)
                 {
-                    animationToPlay = walkRight; // Cammina a destra
+                    animationToPlay = walkRight; 
                 }
                 else
                 {
-                    animationToPlay = walkLeft;  // Cammina a sinistra
+                    animationToPlay = walkLeft;  
                 }
             }
             else
             {
-                // Movimento verticale (o se X e Y sono uguali, diamo priorità a Y)
                 if (moveDirection.y > 0)
                 {
-                    animationToPlay = walkUp;    // Cammina in alto (Back)
+                    animationToPlay = walkUp;
                 }
                 else
                 {
-                    animationToPlay = walkDown;  // Cammina in basso (Front)
+                    animationToPlay = walkDown;
                 }
             }
         }
-        else // Il player è fermo (isMoving è Falso)
+        else 
         {
-            // Il player è fermo, quindi dobbiamo scegliere un'animazione di "Idle".
-            // Usiamo l'ultima direzione in cui si è mosso per far sì che guardi in quella direzione.
             if (Mathf.Abs(lastDirection.x) > Mathf.Abs(lastDirection.y))
             {
-                // Idle orizzontale
                 if (lastDirection.x > 0)
                 {
-                    animationToPlay = idleRight; // Idle a destra
+                    animationToPlay = idleRight; 
                 }
                 else
                 {
-                    animationToPlay = idleLeft;  // Idle a sinistra
+                    animationToPlay = idleLeft;  
                 }
             }
             else
             {
-                // Idle verticale (o se X e Y sono uguali, diamo priorità a Y)
                 if (lastDirection.y > 0)
                 {
-                    animationToPlay = idleBack;  // Idle in alto (Back)
+                    animationToPlay = idleBack;
                 }
                 else
                 {
-                    animationToPlay = idleFront; // Idle in basso (Front)
+                    animationToPlay = idleFront;
                 }
             }
         }
 
-        // Questo controlla se l'animazione che vogliamo riprodurre è già in esecuzione.
-        // Se lo è, non la riproduciamo di nuovo per evitare glitch o reset dell'animazione.
         if (!string.IsNullOrEmpty(animationToPlay) && !playerAnimator.GetCurrentAnimatorStateInfo(0).IsName(animationToPlay))
         {
-            playerAnimator.Play(animationToPlay); // Fa partire l'animazione con il nome scelto.
+            playerAnimator.Play(animationToPlay);
         }
     }
 }
