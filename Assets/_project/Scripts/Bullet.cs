@@ -10,12 +10,13 @@ public class Bullet : MonoBehaviour
     private Vector2 direction;
     Rigidbody2D rb;
 
-    // Start is called before the first frame update
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         rb.velocity = direction * speed;
         transform.right = direction;
+        transform.Rotate(0f, 0f, -45f);
         Destroy(gameObject, lifetime);
     }
 

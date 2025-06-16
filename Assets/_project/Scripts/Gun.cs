@@ -19,12 +19,7 @@ public class Gun : MonoBehaviour
 
     void Awake()
     {
-        gunSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
-
-        if (gunSpriteRenderer == null)
-        {
-            Debug.LogError("Gun: SpriteRenderer non trovato sul GameObject dell'arma! Assicurati che il prefab della Gun abbia un componente SpriteRenderer.", this);
-        }
+        gunSpriteRenderer = GetComponent<SpriteRenderer>();        
     }
 
     public void SetPlayerReference(PlayerController player) //giro subito l'arma appena la equipaggio

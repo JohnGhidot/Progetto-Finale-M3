@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Componenti Player")]
+    
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private PlayerAnimation playerAnimation;
 
@@ -30,15 +30,7 @@ public class PlayerController : MonoBehaviour
         {
             playerAnimation = GetComponent<PlayerAnimation>();
         }
-
-        if (rb == null)
-        {
-            Debug.LogError("PlayerController: Rigidbody2D non trovato sul GameObject!");
-        }
-        if (playerAnimation == null)
-        {
-            Debug.LogError("PlayerController: PlayerAnimation script non trovato sul GameObject!");
-        }
+                
     }
 
     void Update()
