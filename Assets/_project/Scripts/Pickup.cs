@@ -20,6 +20,4 @@ public class Pickup : MonoBehaviour
             gameObject.SetActive(false); // arma sparisce da terra
         }
     }
-
-
 }
